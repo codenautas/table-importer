@@ -29,6 +29,7 @@ $SQL$
        | case when texto = texto_null                                               then 65535 else 0 end
 $SQL$;
 
+-- ejemplo:
 select dato, detect_types(dato, '.', null, '', true, true, true)
   from (select '1' dato
     union select ''
@@ -81,11 +82,11 @@ begin
   execute v_create_tabla_texto;
   raise notice 'levantando las columnas';
   execute format($$COPY tab_impo_temp.tabla_texto FROM %1$L CSV DELIMITER %2$L HEADER $$, ruta_archivo, separador_campos);
-  raise notice 'calculando los tipos %',v_select_tipos_detectados;
+  raise notice 'calculando los tipos';
   execute v_select_tipos_detectados into v_tipos;
-  for
   return to_jsonb(v_tipos)::text;
 end;
 $BODY$;
 
-select importar_tabla('c:\temp\recorridos-realizados-2017.csv', 'recorridos_2017', ',', '"', '.');
+-- select importar_tabla('c:\temp\recorridos-realizados-2017.csv', 'recorridos_2017', ',', '"', '.');
+select importar_tabla('c:\temp\SB11_20101\SB11_20101.txt', 'sb11_201001', '|', '"', '.');
